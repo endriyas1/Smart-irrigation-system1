@@ -1,0 +1,2 @@
+php artisan serve
+sudo php artisan serve --host ip --port 8000
