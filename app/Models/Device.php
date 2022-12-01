@@ -14,6 +14,7 @@ class Device extends Model
   protected $fillable = [
     'id',
     'user_id',
+    'plant_id',
     'name',
     'server_name',
     'moisture',
@@ -30,6 +31,11 @@ class Device extends Model
   public function setting()
   {
     return $this->hasOne(Setting::class);
+  }
+
+  public function plants()
+  {
+    return $this->belongsToMany(Plant::class);
   }
   public function sensors()
   {

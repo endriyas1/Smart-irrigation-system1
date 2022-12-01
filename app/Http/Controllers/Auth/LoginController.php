@@ -80,15 +80,16 @@ class LoginController extends Controller
     ]);
     // dd($request);
 
-    $created = User::create([
+    $user = User::create([
       'id' => Str::uuid(),
       'name' => $request->name,
       'email' => $request->email,
       'password' => bcrypt($request->password),
 
     ]);
-    if ($created) {
-      return redirect()->route('/');
+    $user->syncRoles('user');
+    if ($user) {
+      return redirect()->route('dashboard');
     }
     return redirect()->back()->with('message', "Error!");
   }

@@ -14,6 +14,7 @@ class SettingResource extends JsonResource
    */
   public function toArray($request)
   {
+    // dd($this);
     return [
       'id' => $this->id,
       'device_id' => $this->device_id,

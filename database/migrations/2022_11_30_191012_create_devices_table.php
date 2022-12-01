@@ -15,7 +15,8 @@ return new class extends Migration
   {
     Schema::create('devices', function (Blueprint $table) {
       $table->uuid('id')->primary();
-      $table->foreignUuid('user_id')->constrained()->onDelete('cascade');
+      $table->foreignId('user_id')->constrained()->onDelete('cascade');
+      $table->foreignUuid('plant_id')->nullable();
       $table->string('name');
       $table->string('server_name');
       $table->float('moisture')->default(0);

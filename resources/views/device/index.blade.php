@@ -24,29 +24,36 @@
 
     @if ($devices->count() > 0)
         <!-- Basic Bootstrap Table -->
-        <div class="card">
+        <div class="card ">
             <h5 class="card-header">Your Devices</h5>
 
-            <div class="table-responsive text-nowrap">
-                <table class="table">
+            <div class=" text-nowrap">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>Name</th>
                             <th>Device location</th>
                             <th>Motor Status</th>
+                            <th>plant</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-
                         @foreach ($devices as $device)
                             <tr>
-                                <<td><i class="menu-icon tf-icons bx bx-home text-danger me-3"></i>
+                                <td><i class="menu-icon tf-icons bx bx-home text-danger me-3"></i>
                                     <strong>{{ $device->name }}</strong>
                                 </td>
                                 <td>{{ $device->server_name }}</td>
-                  
+
                                 <td><span class="badge bg-label-primary me-1">{{ $device->motor_status }}</span></td>
+                                @php
+                                    foreach ($device->plants as $plant) {
+                                        $plant = $plant;
+                                    }
+                                @endphp
+                                <td><span class="badge bg-label-success me-1">{{ $plant->name }}</span>
+                                </td>
                                 <td>
                                     <div class="dropdown">
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -56,22 +63,25 @@
                                                 href="{{ route('devices.edit', ['user' => auth()->user()->id, 'device' => $device->id]) }}"><i
                                                     class="bx bx-edit-alt me-2"></i> Edit</a>
                                             <a class="dropdown-item"
-                                                href="{{ route('settings.index', ['user' => auth()->user()->id, 'device' => $device->id, 'setting' => $device->setting()->first()->id]) }}"><i
+                                                href="{{ route('settings.index', ['user' => auth()->user()->id, 'device' => $device->id, 'setting' => $device->id]) }}"><i
                                                     class="bx bx-edit me-2"></i> Setting</a>
                                             <a class="dropdown-item"
                                                 href="{{ route('sensors.index', ['user' => auth()->user()->id, 'device' => $device->id]) }}"><i
                                                     class="bx bx-edit-alt me-2"></i> Show Detail
                                             </a>
-                                            <div class="dropdown-item" >
-                                                <form action="{{route('devices.destroy', $device->id)}}"
-                                                    method="POST">
+                                            <a class="dropdown-item"
+                                                href="{{ route('plants.show', ['user' => auth()->user()->id, 'plant' => $plant->id]) }}"><i
+                                                    class="bx bx-edit-alt me-2"></i> Plant settings
+                                            </a>
+                                            <div class="dropdown-item">
+                                                <form action="{{ route('devices.destroy', $device->id) }}" method="POST">
                                                     @method('DELETE')
                                                     @csrf
-                                                <button class="dropdown-item" type="submit" ><i
-                                                        class="bx bx-trash me-2"></i> Delete</button>
+                                                    <button class="dropdown-item" type="submit"><i
+                                                            class="bx bx-trash "></i> Delete</button>
                                                 </form>
                                             </div>
-                                                  
+
                                         </div>
                                     </div>
                                 </td>

@@ -75,9 +75,23 @@ class DeviceController extends Controller
 
   public function setting(Device $device)
   {
-    $setting = $device->setting()->get();
-    $data = SettingResource::collection($setting)->response()->getData(true);
-    return response($data);
+    $setting = $device->setting()->get()->first();
+    $plant = $device->plants()->get()->first();
+    // $setting->moisture_threshold = $plant->soilMoisture;
+    // $setting->temperature_threshold = $plant->temperature;
+    // $setting->humidity_threshold = $plant->humidity;
+    // dd($setting->id);
+    $data =  [
+      'id' => $setting->id,
+      'device_id' => $setting->device_id,
+      'control_mode' => $setting->control_mode,
+      'moisture_threshold' => $plant->soilMoisture,
+      'temperature_threshold' => $plant->temperature,
+      'humidity_threshold' => $plant->humidity,
+      'motor_status' => $device->motor_status,
+    ];
+    // $data = SettingResource::collection($data)->response()->getData(true);
+    return response([$data,$plant]);
   }
 
   public function updateSetting(Request $request, Device $device)
@@ -89,6 +103,7 @@ class DeviceController extends Controller
   }
   public function toggleMotor(Request $request, Device $device)
   {
+    $device->setting->update(['motor_status' => $request->json('motor_status')]);
     $device->update(['motor_status' => $request->json('motor_status')]);
     return response()->json($request->json('motor_status'), 200);
   }

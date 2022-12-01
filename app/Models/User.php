@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Device;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,7 +12,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-  use HasApiTokens, HasFactory, Notifiable;
+  use HasApiTokens, HasFactory, Notifiable,HasRoles;
 
   /**
    * The attributes that are mass assignable.
@@ -19,7 +20,7 @@ class User extends Authenticatable
    * @var array<int, string>
    */
   protected $fillable = [
-    'id',
+    // 'i d',
     'name',
     'email',
     'password',
@@ -44,10 +45,14 @@ class User extends Authenticatable
     'email_verified_at' => 'datetime',
   ];
 
+  public function plants()
+  {
+    return $this->hasMany(Plant::class);
+  }
 
   public function devices()
   {
     return $this->hasMany(Device::class);
   }
-  public $incrementing = false;
+  // public $incrementing = false;
 }

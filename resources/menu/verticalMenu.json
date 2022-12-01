@@ -4,20 +4,39 @@
       "url": "/dashboard",
       "name": "Dashboard",
       "icon": "menu-icon tf-icons bx bx-home-circle",
-      "slug": "dashboard-analytics"
+      "slug": "dashboard"
     },
     {
       "url": "/devices",
       "name": "Devices",
-      "icon": "menu-icon tf-icons bx bx-home",
+      "icon": "menu-icon tf-icons bx bx-devices",
       "slug": "devices"
     },
     {
-      "url": "/setting",
-      "name": "Setting",
-      "icon": "menu-icon tf-icons bx bx-mobile",
-      "slug": "devices"
+      "url": "/plants",
+      "name": "Plants",
+      "icon": "menu-icon tf-icons bx bx-braille",
+      "slug": "plants"
     },
+    {
+      "url": "/users",
+      "name": "Users",
+      "icon": "menu-icon tf-icons bx bx-user",
+      "slug": "users"
+    },
+    {
+      "url": "/roles",
+      "name": "Roles",
+      "icon": "menu-icon tf-icons bx bx-check-double",
+      "slug": "roles"
+    },
+    {
+      "url": "/permissions",
+      "name": "Permissions",
+      "icon": "menu-icon tf-icons bx bx-door-open",
+      "slug": "permissions"
+    },
+
     {
       "url": "/recommend",
       "name": "Recommend",

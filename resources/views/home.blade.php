@@ -184,18 +184,18 @@
 
         jQuery(document).ready(function() {
 
-            $('.copy-id').on('click',function (e) {
+            $('.copy-id').on('click', function(e) {
                 var tempInput = document.createElement("input");
-    tempInput.style = "position: absolute; left: -1000px; top: -1000px";
-    tempInput.value = $(this).attr('idd');
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    document.execCommand("copy");
-    document.body.removeChild(tempInput)
+                tempInput.style = "position: absolute; left: -1000px; top: -1000px";
+                tempInput.value = $(this).attr('idd');
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand("copy");
+                document.body.removeChild(tempInput)
 
-  // Alert the copied text
-  alert("Device id copied ");
-});
+                // Alert the copied text
+                alert("Device id copied ");
+            });
 
             $('.updateMotor').on('click', function(event) {
                 let elment = $(this);
@@ -209,13 +209,13 @@
                     url: "/api/device/" + deviceId + "/toggle",
                     method: "POST",
                     dataType: "json",
-                    
+
                     data: JSON.stringify(data),
                     success: function(result) {
                         console.log(result);
                         console.log(prevElm);
                         elment.prev().text(result)
-                        elment.attr('motor',result)
+                        elment.attr('motor', result)
 
                     },
                     error: function(error) {
@@ -256,17 +256,17 @@
     @php
         $idGen = 1;
     @endphp
-    <div class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
-        @foreach ($devices as $device)
+    <div class="col-12 col-lg-12 order-2 order-md-3 order-lg-2 mb-4">
+        @forelse ($devices as $device)
             <div class="card">
                 <div class="row row-bordered g-0">
                     <div class="col-md-8">
                         <h5 class="card-header m-0 me-2 pb-3">{{ $device->name }}
-                            <span class="btn copy-id" idd="{{ $device->id }}"
-                                id="{{ $device->id }}"> <i class="menu-icon tf-icons bx bx-copy text-danger me-3"></i>
+                            <span class="btn copy-id" idd="{{ $device->id }}" id="{{ $device->id }}"> <i
+                                    class="menu-icon tf-icons bx bx-copy text-danger me-3"></i>
                             </span>
                         </h5>
-                        
+
                         <div id="graphData{{ $idGen }}" class=" px-2"></div>
                     </div>
                     <div class="col-md-4">
@@ -277,10 +277,10 @@
                                         <span class="fw-semibold d-block mb-1">Motor Status</span>
                                         <p class="card-title mb-2 ">{{ $device->motor_status }}</p>
                                         <button class="btn btn-primary updateMotor" motor="{{ $device->motor_status }}"
-                                            id="{{$device->id }}"> Toggle
+                                            id="{{ $device->id }}"> Toggle
                                         </button>
                                         <small class="text-success fw-semibold"></small>
-                                       
+
                                     </div>
                                 </div>
                             </div>
@@ -288,11 +288,34 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <span class="fw-semibold d-block mb-1">Control Mode</span>
-                                        <p class="card-title mb-2">{{ $device->setting()->first()->control_mode }}</p>
-                                        <button class="btn btn-primary updateMode" id="mode_{{ $device->id }}"
-                                            mode="{{ $device->setting()->first()->control_mode }}"> Change
-                                        </button>
-                                        <small class="text-success fw-semibold"></small>
+
+                                        @foreach ($device->setting()->get() as $setting)
+                                            <p class="card-title mb-2">
+                                                {{ $setting->control_mode }}
+                                            </p>
+                                            <button class="btn btn-primary updateMode" id="mode_{{ $device->id }}"
+                                                mode="{{ $setting->control_mode }}"> Change
+                                            </button>
+                                            <small class="text-success fw-semibold"></small>
+                                        @endforeach
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 mb-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <span class="fw-semibold d-block mb-1">Download Data </span>
+
+                                        @foreach ($device->setting()->get() as $setting)
+                                            <p class="card-title mb-2">
+                                                Get all data collected for this device.
+                                            </p>
+                                            <button class="btn btn-primary updateMode" id="mode_{{ $device->id }}"
+                                                mode="{{ $setting->control_mode }}"> Get <i class="menu-icon tf-icons bx bx-arrow"></i>                                            </button>
+                                            <small class="text-success fw-semibold"></small>
+                                        @endforeach
+
                                     </div>
                                 </div>
                             </div>
@@ -305,69 +328,81 @@
                 </div>
             </div>
             <hr>
-        @endforeach
+        @empty
 
-        <script>
-            var options = {
-                series: [{
-                    data: data.slice()
-                }],
-                chart: {
-                    id: 'realtime',
-                    height: 350,
-                    type: 'line',
-                    animations: {
-                        enabled: true,
-                        easing: 'linear',
-                        dynamicAnimation: {
-                            speed: 1000
-                        }
-                    },
-                    toolbar: {
-                        show: false
-                    },
-                    zoom: {
-                        enabled: false
+            <div class="container-xxl container-p-y">
+                <div class="misc-wrapper">
+                    <h2 class="mb-2 mx-2">Your Smart System shows no device !</h2>
+                    <p class="mb-4 mx-2">
+                        Please add your device to start your smart devices </p>
+                    <a href="{{ route('devices.create') }}" class="btn btn-primary">Get Started ></a>
+
+                </div>
+            </div>
+        @endforelse
+    </div>
+
+    <script>
+        var options = {
+            series: [{
+                data: data.slice()
+            }],
+            chart: {
+                id: 'realtime',
+                height: 350,
+                type: 'line',
+                animations: {
+                    enabled: true,
+                    easing: 'linear',
+                    dynamicAnimation: {
+                        speed: 1000
                     }
                 },
-                dataLabels: {
-                    enabled: false
-                },
-                stroke: {
-                    curve: 'smooth'
-                },
-                title: {
-                    text: 'Dynamic Updating Chart',
-                    align: 'left'
-                },
-                markers: {
-                    size: 0
-                },
-                xaxis: {
-                    type: 'datetime',
-                    range: XAXISRANGE,
-                },
-                yaxis: {
-                    max: 100
-                },
-                legend: {
+                toolbar: {
                     show: false
                 },
-            };
+                zoom: {
+                    enabled: false
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'smooth'
+            },
+            title: {
+                text: 'Dynamic Updating Chart',
+                align: 'left'
+            },
+            markers: {
+                size: 0
+            },
+            xaxis: {
+                type: 'datetime',
+                range: XAXISRANGE,
+            },
+            yaxis: {
+                max: 100
+            },
+            legend: {
+                show: false
+            },
+        };
 
-            var chart = new ApexCharts(document.querySelector("#chart"), options);
-            chart.render();
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
 
 
-            window.setInterval(function() {
-                getNewSeries(lastDate, {
-                    min: 10,
-                    max: 90
-                })
+        window.setInterval(function() {
+            getNewSeries(lastDate, {
+                min: 10,
+                max: 90
+            })
 
-                chart.updateSeries([{
-                    data: data
-                }])
-            }, 1000)
-        </script>
-    @endsection
+            chart.updateSeries([{
+                data: data
+            }])
+        }, 1000)
+    </script>
+@endsection

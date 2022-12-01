@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Plant;
 use App\Models\Device;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class DeviceController extends Controller
 {
@@ -16,6 +18,9 @@ class DeviceController extends Controller
   public function index(Request $request)
   {
     $devices = auth()->user()->devices()->get();
+    if (auth()->user()->hasRole('admin')) {
+      $devices = Device::paginate(10);
+    }
     return view('device.index', compact('devices'));
   }
 
@@ -26,7 +31,8 @@ class DeviceController extends Controller
    */
   public function create()
   {
-    return view('device.create');
+    $plants = Plant::all();
+    return view('device.create', compact('plants'));
   }
 
   /**
@@ -37,18 +43,29 @@ class DeviceController extends Controller
    */
   public function store(Request $request)
   {
+
+    // dd($request);
     $this->validate($request, [
       'name' => "required",
       'server_name' => "required|max:255",
+
     ]);
 
     $device = $request->user()->devices()->create([
       'id' => Str::uuid(),
       'name' => $request->name,
       'server_name' => $request->server_name,
+      // 'plant_id'=>$request->plant
     ]);
+
+    $plant = Plant::find($request->plant);
+    // $plant->device()->attach($device);
+    $device->plants()->attach($plant);
     $setting = $device->setting()->create([
-      'id' => Str::uuid()
+      'id' => Str::uuid(),
+      'moisture_threshold' => $plant->soilMoisture,
+      'temperature_threshold' => $plant->temperature,
+      'humidity_threshold' => $plant->humidity
     ]);
     $senor = $device->sensors()->create([
       'id' => Str::uuid()
@@ -75,7 +92,9 @@ class DeviceController extends Controller
    */
   public function edit(Device $device)
   {
-    return view('device.edit', ['device' => $device]);
+    $plants = Plant::all();
+
+    return view('device.edit', compact('device', 'plants'));
   }
 
   /**
@@ -88,6 +107,8 @@ class DeviceController extends Controller
   public function update(Request $request, Device $device)
   {
     $device->update($request->only('name', 'server_name'));
+    $device->plants()->detach();
+    $device->plants()->attach(Plant::find($request->plant));
     return redirect()->route('devices.index', ['user' => auth()->user()->id]);
   }
 
