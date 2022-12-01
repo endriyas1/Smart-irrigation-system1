@@ -28,25 +28,9 @@
                         <!-- /Logo -->
                         <h4 class="mb-2">Welcome to {{ config('variables.templateName') }}! 👋</h4>
                         <p class="mb-4">Please sign-in to your account and start the adventure</p>
-                        @if (session('message'))
-                            <div class="bs-toast toast toast-placement-ex m-2" role="alert" aria-live="assertive"
-                                aria-atomic="true" data-delay="2000">
-                                <div class="toast-header">
-                                    <i class='bx bx-bell me-2'></i>
-                                    <div class="me-auto fw-semibold">Bootstrap</div>
-                                    <small>11 mins ago</small>
-                                    <button type="button" class="btn-close" data-bs-dismiss="toast"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="toast-body">
-                                    {{ session('message') }}
-                                </div>
-                            </div>
-                            <script>
-                                let toastPlacement = new bootstrap.Toast('.toast-placement-ex');
-                                toastPlacement.show();
-                            </script>
-                        @endif
+                        <div class="mt-2">
+                            @include('layouts.partials.messages')
+                        </div>
                         <form id="formAuthentication" class="mb-3" action="{{ route('auth.login') }}" method="POST">
                             @csrf
                             <div class="mb-3">

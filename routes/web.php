@@ -22,6 +22,7 @@ Route::group(['middleware' => ['guest']], function () {
   Route::post('/register', [LoginController::class, 'register']);
   Route::get('/forgot-password', [HomeController::class, 'forgotPassword'])->name('auth.forgot-password');
   Route::post('/login', [LoginController::class, 'login'])->name('auth.login');
+  Route::get('/login', [HomeController::class, 'index'])->name('login');
 });
 Route::group(['middleware' => ['auth', 'permission']], function () {
   Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -31,6 +32,7 @@ Route::group(['middleware' => ['auth', 'permission']], function () {
   Route::resource('plants', PlantController::class);
   Route::resource('{device}/settings', SettingController::class);
   Route::resource('{device}/sensors', SensorController::class);
+  Route::get('/device/{device}/download', [DeviceController::class, 'download'])->name('devices.download');
 
   Route::resource('users', UsersController::class);
   Route::resource('roles', RolesController::class);

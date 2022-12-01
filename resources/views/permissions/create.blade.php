@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Add Plant')
+@section('title', 'Add Device')
 @section('vendor-style')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/apex-charts/apex-charts.css') }}">
 @endsection
@@ -14,63 +14,30 @@
     <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
 @endsection
 @section('content')
-
-    <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Plant/</span> Add</h4>
-
-    <!-- Basic Layout & Basic with Icons -->
-    <div class="row">
-        <!-- Basic Layout -->
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
-            <div class="card mb-4">
-                <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="mb-0">Add New Plant</h5> <small class="text-muted float-end"></small>
-                </div>
-                <div class="card-body">
-                    <form name="deviceAddForm" method="POST" action="{{ route('plants.store') }}">
-                      @csrf
-                      <div class="row mb-3">
-                            <label class="col-sm-3 col-form-label" for="name">Plant Name</label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="eg. Potato" />
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label class="col-sm-3 col-form-label" for="server_name">Optimal Temperature</label>
-                            <div class="col-sm-9">
-                                <input type="number" min="0" max="100" class="form-control" id="temperature" name="temperature"
-                                    placeholder="Relative temperature" />
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                          <label class="col-sm-3  col-form-label" for="server_name">Humidity</label>
-                          <div class="col-sm-9">
-                              <input type="number"  min="0" max="100" class="form-control" id="humidity" name="humidity"
-                                  placeholder="Humidity" />
-                          </div>
-                      </div>
-                      <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label" for="server_name">Soil Moisture</label>
-                        <div class="col-sm-9">
-                            <input type="number"  min="0" max="100" class="form-control" id="soil_moisture" name="soil_moisture"
-                                placeholder="Soil Moisture" />
-                        </div>
-                    </div>
-
-
-                        <div class="row justify-content-end">
-                            <div class="col-sm-9">
-                                <button type="submit" class="btn btn-primary">Add</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+    <div class="bg-light p-4 rounded">
+        <h2>Add permission</h2>
+        <div class="lead">
+            Add permission.
         </div>
-        <div class="col-md-3"></div>
+
+        <div class="container mt-4">
+
+            <form method="POST" action="{{ route('permissions.store') }}">
+                @csrf
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input value="{{ old('name') }}" type="text" class="form-control" name="name" placeholder="Name"
+                        required>
+
+                    @if ($errors->has('name'))
+                        <span class="text-danger text-left">{{ $errors->first('name') }}</span>
+                    @endif
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save permission</button>
+                <a href="{{ route('permissions.index') }}" class="btn btn-default">Back</a>
+            </form>
+        </div>
 
     </div>
-
-
 @endsection

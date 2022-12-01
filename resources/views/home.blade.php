@@ -261,7 +261,8 @@
             <div class="card">
                 <div class="row row-bordered g-0">
                     <div class="col-md-8">
-                        <h5 class="card-header m-0 me-2 pb-3">{{ $device->name }}
+                        <h5 data-toggle="tooltip" data-placement="right" title="Tooltip on right"
+                            class="card-header m-0 me-2 pb-3">{{ $device->name }}
                             <span class="btn copy-id" idd="{{ $device->id }}" id="{{ $device->id }}"> <i
                                     class="menu-icon tf-icons bx bx-copy text-danger me-3"></i>
                             </span>
@@ -311,9 +312,10 @@
                                             <p class="card-title mb-2">
                                                 Get all data collected for this device.
                                             </p>
-                                            <button class="btn btn-primary updateMode" id="mode_{{ $device->id }}"
-                                                mode="{{ $setting->control_mode }}"> Get <i class="menu-icon tf-icons bx bx-arrow"></i>                                            </button>
-                                            <small class="text-success fw-semibold"></small>
+                                            <a class="dropdown-item"
+                                                href="{{ route('devices.download', ['user' => auth()->user()->id, 'device' => $device->id]) }}"><i
+                                                    class="bx bx-down-arrow-alt me-2"></i> Get
+                                            </a>
                                         @endforeach
 
                                     </div>
@@ -341,6 +343,7 @@
             </div>
         @endforelse
     </div>
+    {{ $devices->links() }}
 
     <script>
         var options = {

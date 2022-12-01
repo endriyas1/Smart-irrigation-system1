@@ -1,6 +1,6 @@
 @php
-$containerNav = $containerNav ?? 'container-fluid';
-$navbarDetached = $navbarDetached ?? '';
+    $containerNav = $containerNav ?? 'container-fluid';
+    $navbarDetached = $navbarDetached ?? '';
 
 @endphp
 
@@ -40,7 +40,7 @@ $navbarDetached = $navbarDetached ?? '';
     <!-- Search -->
     <div class="navbar-nav align-items-center">
         <div class="nav-item d-flex align-items-center">
-          Smart Farm
+            Smart Farm
             {{-- <i class="bx bx-search fs-4 lh-0"></i>
             <input type="text" class="form-control border-0 shadow-none" placeholder="Search..."
                 aria-label="Search..."> --}}
@@ -60,21 +60,21 @@ $navbarDetached = $navbarDetached ?? '';
         <li class="nav-item navbar-dropdown dropdown-user dropdown">
             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                 <div class="avatar avatar-online">
-                  {{auth()->user()->name}}                </div>
+                    {{ auth()->user()->name }} </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
-              @auth
-                <li>
-                    <a class="dropdown-item" href="javascript:void(0);">
-                        <div class="d-flex">
+                @auth
+                    <li>
+                        <a class="dropdown-item" href="javascript:void(0);">
+                            <div class="d-flex">
 
-                            <div class="flex-grow-1">
-                                <span class="fw-semibold d-block">{{auth()->user()->name}}</span>
-                                <small class="text-muted">Admin</small>
+                                <div class="flex-grow-1">
+                                    <span class="fw-semibold d-block">{{ auth()->user()->name }}</span>
+                                    <small class="text-muted">{{auth()->user()->roles()->pluck('name')[0]}}</small>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                </li>
+                        </a>
+                    </li>
                 @endauth
                 <li>
                     <div class="dropdown-divider"></div>

@@ -73,12 +73,12 @@ class LoginController extends Controller
   public function register(Request $request)
   {
     # code...
-    $this->validate($request, [
-      'name' => ['required', 'string', 'max:255'],
-      'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-      'password' => ['required', 'string', 'min:8'],
+    $sta = $this->validate($request, [
+      'name' => 'required|max:255',
+      'email' => 'required|email|max:255|unique:users',
+      'password' => 'required|min:6',
     ]);
-    // dd($request);
+    // dd($sta);
 
     $user = User::create([
       'id' => Str::uuid(),
@@ -88,10 +88,7 @@ class LoginController extends Controller
 
     ]);
     $user->syncRoles('user');
-    if ($user) {
-      return redirect()->route('dashboard');
-    }
-    return redirect()->back()->with('message', "Error!");
+    return redirect()->route('login')->withSuccess(__("Accounted created successfully "));
   }
 
   public function logout(Request $request)

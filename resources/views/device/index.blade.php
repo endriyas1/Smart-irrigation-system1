@@ -41,7 +41,7 @@
                     <tbody class="table-border-bottom-0">
                         @foreach ($devices as $device)
                             <tr>
-                                <td><i class="menu-icon tf-icons bx bx-home text-danger me-3"></i>
+                                <td><i class="menu-icon tf-icons bx bx-devices text-danger me-3"></i>
                                     <strong>{{ $device->name }}</strong>
                                 </td>
                                 <td>{{ $device->server_name }}</td>
@@ -73,11 +73,11 @@
                                                 href="{{ route('plants.show', ['user' => auth()->user()->id, 'plant' => $plant->id]) }}"><i
                                                     class="bx bx-edit-alt me-2"></i> Plant settings
                                             </a>
-                                            <div class="dropdown-item">
+                                            <div class="dropdown-item text-danger">
                                                 <form action="{{ route('devices.destroy', $device->id) }}" method="POST">
                                                     @method('DELETE')
                                                     @csrf
-                                                    <button class="dropdown-item" type="submit"><i
+                                                    <button class="dropdown-item text-danger" type="submit"><i
                                                             class="bx bx-trash "></i> Delete</button>
                                                 </form>
                                             </div>

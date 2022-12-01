@@ -48,7 +48,7 @@ class DashboardController extends Controller
         ]
       );
     }
-    $devices = auth()->user()->devices()->get()->all();
+    $devices = auth()->user()->devices()->paginate(1);
     $devices2 = json_encode($devices);
     return view('home', compact('devices', 'devices2'));
   }

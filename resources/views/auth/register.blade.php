@@ -33,21 +33,30 @@
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
                                 <input type="text" class="form-control" id="name" name="name"
-                                    placeholder="Enter your username" autofocus>
+                                    placeholder="Enter your name" autofocus value="{{ old('name') }}">
+                                @if ($errors->has('name'))
+                                    <span class="text-danger text-left">{{ $errors->first('name') }}</span>
+                                @endif
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="text" class="form-control" id="email" name="email"
-                                    placeholder="Enter your email">
+                                    placeholder="Enter your email" value="{{ old('email') }}" autocomplete="off">
+                                @if ($errors->has('email'))
+                                    <span class="text-danger text-left">{{ $errors->first('email') }}</span>
+                                @endif
                             </div>
                             <div class="mb-3 form-password-toggle">
                                 <label class="form-label" for="password">Password</label>
                                 <div class="input-group input-group-merge">
                                     <input type="password" id="password" class="form-control" name="password"
                                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                        aria-describedby="password" />
+                                        aria-describedby="password" autocomplete="off"/>
                                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                                 </div>
+                                @if ($errors->has('password'))
+                                    <span class="text-danger text-left">{{ $errors->first('password') }}</span>
+                                @endif
                             </div>
                             <div class="mb-3 form-password-toggle">
                                 <label class="form-label" for="password-confirm">Confirm Password</label>
@@ -58,6 +67,9 @@
                                         aria-describedby="Confirm password" />
                                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                                 </div>
+                                @if ($errors->has('password-confirmation'))
+                                    <span class="text-danger text-left">{{ $errors->first('password-confirmation') }}</span>
+                                @endif
                             </div>
 
 

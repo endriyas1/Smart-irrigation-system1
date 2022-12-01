@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Plant;
 use App\Models\Device;
+use App\Models\Sensor;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Response;
 
 class DeviceController extends Controller
 {
@@ -122,5 +124,29 @@ class DeviceController extends Controller
   {
     $device->delete();
     return back();
+  }
+
+  public function download(Device $device)
+  {
+    $filename = "attachment; filename=device_data_" . now().'.csv';
+    $headers = [
+      'Cache-Control'       => 'must-revalidate, post-check=0, pre-check=0',   'Content-type'        => 'text/csv',   'Content-Disposition' => $filename,   'Expires'             => '0',   'Pragma'              => 'public'
+    ];
+
+    $list = $device->sensors()->get()->toArray();
+
+    # add headers for each column in the CSV download
+    array_unshift($list, array_keys($list[0]));
+
+    $callback = function () use ($list) {
+      $FH = fopen('php://output', 'w');
+      foreach ($list as $row) {
+        fputcsv($FH, $row);
+      }
+      fclose($FH);
+    };
+
+    return Response::stream($callback, 200, $headers); //use Illuminate\Support\Facades\Response;
+
   }
 }
